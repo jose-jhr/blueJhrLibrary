@@ -129,7 +129,7 @@ private fun rxReceived() {
 ```
 
 8) para enviar información hacemos uso de la funcion  blue.bluTx("a")
-``` kotlin
+```kotlin
 buttonSend.setOnClickListener {
             blue.bluTx(edtTx.text.toString())
 }
