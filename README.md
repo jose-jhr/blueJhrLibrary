@@ -35,7 +35,7 @@ blue.onBluetooth()
 
 esta seccion tambien pide al usuario encender el bluetooth, para iniciar los demas procesos
 
- ```
+ ```kotlin
      /**
          * pedimos los permisos correspondientes, para android 12 hay que pedir los siguientes admin y scan
          * en android 12 o superior se requieren permisos adicionales
@@ -55,7 +55,7 @@ esta seccion tambien pide al usuario encender el bluetooth, para iniciar los dem
  4) verificar si el usuario encendio el bluetooth en caso contrario pedimos que se habilite el servicio de bluetooth con la funcion initializeBluetooth(),
  si el bluetooth se ha iniciado, capturamos los dispositivos vinculador con el codigo de respuesta 100.
  	 
- ```
+ ```kotlin
 	override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
 		if (!blue.stateBluetoooth() && requestCode == 100){
 		    blue.initializeBluetooth()
@@ -75,7 +75,7 @@ esta seccion tambien pide al usuario encender el bluetooth, para iniciar los dem
 
 6) ahora hacemos uso de la funcion listener setDataLoadFinishedListener de BluJhr con el fin de conocer el estado de conexion del dispositivo movil.
  
- ```
+ ```kotlin
  listDeviceBluetooth.setOnItemClickListener { adapterView, view, i, l ->
             if (devicesBluetooth.isNotEmpty()){
                 blue.connect(devicesBluetooth[i])
@@ -118,7 +118,7 @@ esta seccion tambien pide al usuario encender el bluetooth, para iniciar los dem
 7) una vez la conexión fue exitosa hacemos uso de la funcion rxReceived(), funcion que se encargar de recibir información del microcontralador o dispositivo por medio de bluetooth, cada vez que exista un dato nuevo la variable rx:String tomara el valor en cadena de texto de la informacion recibida.
 
 
-```
+```kotlin
 private fun rxReceived() {
         blue.loadDateRx(object:BluJhr.ReceivedData{
             override fun rxDate(rx: String) {
@@ -129,7 +129,7 @@ private fun rxReceived() {
 ```
 
 8) para enviar información hacemos uso de la funcion  blue.bluTx("a")
-```
+```kotlin
 buttonSend.setOnClickListener {
             blue.bluTx(edtTx.text.toString())
         }
@@ -140,7 +140,7 @@ buttonSend.setOnClickListener {
 
 MainActivity.kt
 
-```
+```kotlin
 
 package com.ingenieriajhr.createlibbluetooth
 
@@ -260,7 +260,7 @@ class MainActivity : AppCompatActivity() {
 
 activity_main.xml
 
-```
+```xml
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
