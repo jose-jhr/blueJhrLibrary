@@ -129,10 +129,10 @@ private fun rxReceived() {
 ```
 
 8) para enviar información hacemos uso de la funcion  blue.bluTx("a")
-```kotlin
+``` kotlin
 buttonSend.setOnClickListener {
             blue.bluTx(edtTx.text.toString())
-        }
+}
 ```
 
 9) en el siguiente ejemplo se diseño un aplicativo con el fin de enviar y recibir datos por medio de bluetooth, la información se recibe en un TextView y lo que se desea enviar se escribe en el editText y se envia al hacer click en el boton enviar, a continuación el ejemplo.
