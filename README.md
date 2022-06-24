@@ -21,12 +21,12 @@ Para usar la libreria BlueJhr utilizada para microcontroladores sigue los siguie
 
  
  2) Inicializamos el objeto BlueJhr 
-  ```
-   	lateinit var blue:BluJhr
+```
+lateinit var blue:BluJhr
  	
-	blue = BluJhr(this)
- 	blue.onBluetooth()
-  ```
+blue = BluJhr(this)
+blue.onBluetooth()
+```
   
   ![image](https://user-images.githubusercontent.com/66834393/175436397-7938ec4f-cf7c-4f5b-99d1-5c5846ee1144.png)
 
