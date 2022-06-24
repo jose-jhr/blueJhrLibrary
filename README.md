@@ -21,7 +21,7 @@ Para usar la libreria BlueJhr utilizada para microcontroladores sigue los siguie
 
  
  2) Inicializamos el objeto BlueJhr 
-```
+``` kotlin
 lateinit var blue:BluJhr
  	
 blue = BluJhr(this)
