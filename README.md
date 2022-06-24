@@ -335,4 +335,4 @@ imagen del programa de ejemplo.
 
 
 
-
+Gracias por utilizar mi libreria, te agradeceria si te suscribes a mi canal https://www.youtube.com/c/INGENIER%C3%8DAJHR gracias.
