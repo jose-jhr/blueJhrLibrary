@@ -45,7 +45,11 @@ esta seccion tambien pide al usuario encender el bluetooth, para iniciar los dem
                 Toast.makeText(this, "Exit", Toast.LENGTH_SHORT).show()
                 blue.initializeBluetooth()
             }else{
-                Toast.makeText(this, "Algo salio mal", Toast.LENGTH_SHORT).show()
+                if(Build.VERSION.SDK_INT < Build.VERSION_CODES.S){
+                    blue.initializeBluetooth()
+                }else{
+                    Toast.makeText(this, "Algo salio mal", Toast.LENGTH_SHORT).show()
+                }
             }
             super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         }
@@ -61,10 +65,15 @@ esta seccion tambien pide al usuario encender el bluetooth, para iniciar los dem
 		    blue.initializeBluetooth()
 		}else{
 		    if (requestCode == 100){
-			devicesBluetooth = blue.deviceBluetooth()
-			val adapter = ArrayAdapter(this,android.R.layout.simple_expandable_list_item_1,devicesBluetooth)
-			listDeviceBluetooth.adapter = adapter
-		    }
+                devicesBluetooth = blue.deviceBluetooth()
+                if (devicesBluetooth.isNotEmpty()){
+                    val adapter = ArrayAdapter(this,android.R.layout.simple_expandable_list_item_1,devicesBluetooth)
+                    listDeviceBluetooth.adapter = adapter
+                }else{
+                    Toast.makeText(this, "No tienes vinculados dispositivos", Toast.LENGTH_SHORT).show()
+                }
+         
+            }
 		}
 		super.onActivityResult(requestCode, resultCode, data)
 	    }
