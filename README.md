@@ -364,8 +364,6 @@ Gracias por utilizar mi libreria, te agradeceria si te suscribes a mi canal http
 
 2) Metodo con varias activitys
 
-2.1) Inicializar objeto
-
 
 ```kotlin
 
