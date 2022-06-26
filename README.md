@@ -354,3 +354,232 @@ imagen del programa de ejemplo.
 
 
 Gracias por utilizar mi libreria, te agradeceria si te suscribes a mi canal https://www.youtube.com/c/INGENIER%C3%8DAJHR gracias.
+
+
+
+
+
+
+
+
+2) Metodo con varias activitys
+
+2.1) Inicializar objeto
+
+
+```kotlin
+
+class MainActivity : AppCompatActivity() {
+
+    lateinit var blue: BluJhr
+    var devicesBluetooth = ArrayList<String>()
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+
+        blue = BluJhr(this)
+        blue.onBluetooth()
+
+        listDeviceBlu.setOnItemClickListener { adapterView, view, i, l ->
+            val intent = Intent(this,ConnBlue::class.java)
+            intent.putExtra("addres",devicesBluetooth[i])
+            startActivity(intent)
+        }
+
+
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        if (blue.checkPermissions(requestCode,grantResults)){
+            Toast.makeText(this, "Exit", Toast.LENGTH_SHORT).show()
+            blue.initializeBluetooth()
+        }else{
+            if(Build.VERSION.SDK_INT < Build.VERSION_CODES.S){
+                blue.initializeBluetooth()
+            }else{
+                Toast.makeText(this, "Algo salio mal", Toast.LENGTH_SHORT).show()
+            }
+        }
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if (!blue.stateBluetoooth() && requestCode == 100){
+            blue.initializeBluetooth()
+        }else{
+            if (requestCode == 100){
+                devicesBluetooth = blue.deviceBluetooth()
+                if (devicesBluetooth.isNotEmpty()){
+                    val adapter = ArrayAdapter(this,android.R.layout.simple_expandable_list_item_1,devicesBluetooth)
+                    listDeviceBlu.adapter = adapter
+                }else{
+                    Toast.makeText(this, "No tienes vinculados dispositivos", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+        super.onActivityResult(requestCode, resultCode, data)
+    }
+
+}
+
+```
+
+Aqui el layout de MainActivity
+
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/listDeviceBlu"
+        >
+    </ListView>
+
+</LinearLayout>
+```
+
+
+2.2) Creamos una nueva activity llamada en este caso ConnBlue.kt
+
+```kotlin
+
+class ConnBlue : AppCompatActivity() {
+
+    var addres = ""
+
+    lateinit var blu: BluJhr
+
+    var estadoConexion = BluJhr.Connected.False
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_conn_blue)
+
+        addres = intent.getStringExtra("addres").toString()
+
+        blu = BluJhr(this)
+
+        blu.setDataLoadFinishedListener(object:BluJhr.ConnectedBluetooth{
+            override fun onConnectState(state: BluJhr.Connected) {
+                when (state) {
+                    BluJhr.Connected.True -> {
+                        Toast.makeText(applicationContext, "True", Toast.LENGTH_SHORT).show()
+                        estadoConexion = state
+                    }
+                    BluJhr.Connected.Pending -> {
+                        Toast.makeText(applicationContext, "Pending", Toast.LENGTH_SHORT).show()
+                        estadoConexion = state
+                        rxReceived()
+                    }
+                    BluJhr.Connected.False -> {
+                        Toast.makeText(applicationContext, "False", Toast.LENGTH_SHORT).show()
+                        estadoConexion = state
+                    }
+                    BluJhr.Connected.Disconnect -> {
+                        Toast.makeText(applicationContext, "Disconnect", Toast.LENGTH_SHORT).show()
+                        estadoConexion = state
+                        startActivity(Intent(applicationContext,MainActivity::class.java))
+                    }
+                }
+            }
+        })
+
+        btnSend.setOnClickListener {
+            blu.bluTx(edtSend.text.toString())
+        }
+
+
+
+    }
+
+
+    /**
+     * Se llama al siguiente método cuando cambia el foco de la ventana.
+     */
+    override fun onWindowFocusChanged(hasFocus: Boolean) {
+        super.onWindowFocusChanged(hasFocus)
+        Toast.makeText(applicationContext, "Entro", Toast.LENGTH_SHORT).show()
+        if (estadoConexion != BluJhr.Connected.True){
+            blu.connect(addres)
+        }
+
+    }
+
+    private fun rxReceived() {
+        blu.loadDateRx(object:BluJhr.ReceivedData{
+            override fun rxDate(rx: String) {
+                txtConsola.text = txtConsola.text.toString() +rx
+            }
+        })
+    }
+
+
+}
+
+```
+
+aqui el layout de ConnBlue
+
+```xml
+
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".ConnBlue">
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginTop="10dp"
+        android:id="@+id/edtSend"
+        >
+    </EditText>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_gravity="center_horizontal"
+        android:text="send"
+        android:id="@+id/btnSend"
+        >
+    </Button>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginTop="10dp"
+        android:text="Rx:  "
+        android:id="@+id/txtConsola"
+        >
+    </TextView>
+
+
+</LinearLayout>
+
+```
+
+
+
+
+
+
+
+
+
