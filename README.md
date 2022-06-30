@@ -37,7 +37,7 @@ esta seccion tambien pide al usuario encender el bluetooth, para iniciar los dem
 
  ```kotlin
      /**
-         * pedimos los permisos correspondientes, para android 12 hay que pedir los siguientes admin y scan
+         * pedimos los permisos correspondientes, para android 12 hay que pedir los siguientes BLUETOOTH_SCAN y BLUETOOTH_CONNECT
          * en android 12 o superior se requieren permisos adicionales
          */
         override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
