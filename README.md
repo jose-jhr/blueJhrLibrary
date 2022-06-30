@@ -96,7 +96,7 @@ esta seccion tambien pide al usuario encender el bluetooth, para iniciar los dem
                                 Toast.makeText(applicationContext,"True",Toast.LENGTH_SHORT).show()
                                 listDeviceBluetooth.visibility = View.GONE
                                 viewConn.visibility = View.VISIBLE
-				rxReceived()
+				 rxReceived()
                             }
 
                             BluJhr.Connected.Pending->{
@@ -191,11 +191,12 @@ class MainActivity : AppCompatActivity() {
                                 Toast.makeText(applicationContext,"True",Toast.LENGTH_SHORT).show()
                                 listDeviceBluetooth.visibility = View.GONE
                                 viewConn.visibility = View.VISIBLE
+				rxReceived()
                             }
 
                             BluJhr.Connected.Pending->{
                                 Toast.makeText(applicationContext,"Pending",Toast.LENGTH_SHORT).show()
-                                rxReceived()
+                                
                             }
 
                             BluJhr.Connected.False->{
