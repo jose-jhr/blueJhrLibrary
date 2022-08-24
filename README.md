@@ -575,6 +575,7 @@ aqui el layout de ConnBlue
 
 ```
 
+A CONTINUACION LA IMPLEMENTACIÓN EN JAVA
 
 
 
